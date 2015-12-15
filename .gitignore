@@ -1,4 +1,4 @@
 .gradle/
-bin/
-build/
+*/bin/
+*/build/
 old/
