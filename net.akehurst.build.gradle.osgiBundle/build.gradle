@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'groovy'
 	id 'maven'
 }
 
@@ -17,6 +18,7 @@ repositories {
 
 dependencies {
     compile gradleApi()
-	compile 'net.akehurst.build:net.akehurst.build.resolver.p2:1+'
+	compile project(":net.akehurst.build.gradle.resolver.p2")
+	//compile 'biz.aQute.bnd:bndlib:2.4.0'
 }
 

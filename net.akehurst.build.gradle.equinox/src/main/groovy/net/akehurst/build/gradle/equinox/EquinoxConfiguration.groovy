@@ -19,11 +19,20 @@ import java.util.*
 
 class EquinoxConfiguration {
 
+	EquinoxConfiguration() {
+		this.startInfo = new HashMap<>()
+		this.properties = new HashMap<>()
+	}
+	
 	String application;
 	String layout; //'gradle' or 'eclipse'
 
-	Map<String, String> startInfo = new HashMap<>();
+	Map<String, String> startInfo
 
+	void layout(String value) {
+		this.layout = value;
+	}
+	
 	void start(String bundleName) {
 		this.startInfo.put(bundleName,"")	
 	}
@@ -32,4 +41,11 @@ class EquinoxConfiguration {
 		this.startInfo.put(bundleName,level)	
 	}
 
+	Map<String,String> properties
+	void properties(Map<String,String> properties) {
+		this.properties = properties
+	}
+	void property(String name, String value) {
+		this.properties.put(name,value)
+	}
 }

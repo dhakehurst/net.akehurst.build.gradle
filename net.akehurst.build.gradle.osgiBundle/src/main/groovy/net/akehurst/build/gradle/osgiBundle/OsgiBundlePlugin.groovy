@@ -27,6 +27,8 @@ import org.gradle.api.*
 import org.gradle.api.plugins.*
 import org.gradle.api.tasks.*
 
+import net.akehurst.build.gradle.resolver.p2.utils.ManifestReader;
+
 class OsgiBundlePlugin implements Plugin<Project> {
 
   @Override
@@ -40,7 +42,26 @@ class OsgiBundlePlugin implements Plugin<Project> {
 			from 'META-INF/MANIFEST.MF'
 		}
 	}
-		
+	
+	
+	def t = project.tasks.create(name:'addManifestDependencies') {
+		ManifestReader mr = new ManifestReader(project.file('META-INF/MANIFEST.MF'));
+		for(ManifestReader.DependencyInfo di: mr.getTransitiveDependencies()) {
+			String dep = ":"+di.getBundleName()+":"+di.getVersion();
+			def prj = project.rootProject.findProject(di.getBundleName());
+			if (null==prj) {
+				project.dependencies {
+					delegate.'compile'(dep)
+				}
+			} else {
+				project.dependencies {
+					delegate.'compile'(prj)
+				}
+			}
+		}
+	}
+	
+	project.tasks.build.dependsOn(t)
 
   }
  

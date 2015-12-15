@@ -78,6 +78,20 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 	abstract public URI fetchArtifact(String artifactId, String versionRangeString) throws OsgiP2ResolverException;
 	
 	
+	String gradleToOsgiVersion(String gradleVersionString) {
+		
+		if ("+".equals(gradleVersionString)) {
+			return "0.0.0";
+		} else if (gradleVersionString.endsWith("+")) {
+			String v = gradleVersionString.substring(0, gradleVersionString.length()-1);
+			return v; //an OSGI version range with a simple number means that number or greater
+		} else {
+			//strict version
+			return "["+gradleVersionString+","+gradleVersionString+"]";
+		}
+		
+	}
+	
 	void addDependencies(DefaultModuleDescriptor moduleDescriptor, String group, Manifest manifest) {
 		//can't resolve dependencies because the resolution of dependencies doesn't seem to look in the p2 resolver!
 		
@@ -134,13 +148,10 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 		LOG.trace("resolveArtifact");
 
 		String artifactId = artifact.getName().getName();
-		String versionRangeString = ((ModuleComponentIdentifier) artifact.getComponentId()).getVersion();
-		// TODO: convert gradle version ranges into p2 version ranges
-		if ("+".equals(versionRangeString)) {
-			versionRangeString = "0.0.0";
-		}
+		String gradleVersionRangeString = ((ModuleComponentIdentifier) artifact.getComponentId()).getVersion();
+		String osgiVersionRangeString = gradleToOsgiVersion(gradleVersionRangeString);
 		try {
-			URI fileUri = this.fetchArtifact(artifactId, versionRangeString);
+			URI fileUri = this.fetchArtifact(artifactId, osgiVersionRangeString);
 			if (null != fileUri) {
 				result.resolved(Paths.get(fileUri).toFile());
 			} else {
@@ -167,8 +178,10 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 			String config = "default";
 			LOG.trace("configuration {}", config);
 			String artifactId = moduleComponentIdentifier.getModule();
-			String versionRangeString = moduleComponentIdentifier.getVersion();
-			URI fileUri = this.fetchArtifact(artifactId, versionRangeString);
+			String gradleVersionRangeString = moduleComponentIdentifier.getVersion();
+			String osgiVersionRangeString = gradleToOsgiVersion(gradleVersionRangeString);
+
+			URI fileUri = this.fetchArtifact(artifactId, osgiVersionRangeString);
 
 			JarFile bundle = new JarFile(new File(fileUri));
 

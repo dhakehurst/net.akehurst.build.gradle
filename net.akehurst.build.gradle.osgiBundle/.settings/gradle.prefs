@@ -1,0 +1,12 @@
+{
+  "1.0": {
+    "project_path": ":net.akehurst.build.gradle.osgiBundle",
+    "project_dir": "/Users/akehurst/git/net.akehurst.build.gradle/net.akehurst.build.gradle.osgiBundle",
+    "connection_project_dir": "/Users/akehurst/git/net.akehurst.build.gradle",
+    "connection_gradle_user_home": null,
+    "connection_gradle_distribution": "GRADLE_DISTRIBUTION(VERSION(2.8))",
+    "connection_java_home": null,
+    "connection_jvm_arguments": "",
+    "connection_arguments": ""
+  }
+}
