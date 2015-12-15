@@ -1,0 +1,22 @@
+plugins {
+	id 'java'
+	id 'maven'
+}
+
+group='net.akehurst.build.gradle'
+version='1.0.0'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+	maven {
+		url 'https://dl.bintray.com/dhakehurst/maven'
+	}
+}
+
+dependencies {
+    compile gradleApi()
+	compile 'net.akehurst.build:net.akehurst.build.resolver.p2:+'
+}
+

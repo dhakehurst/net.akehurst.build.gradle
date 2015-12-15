@@ -1,0 +1,2 @@
+include 'net.akehurst.build.gradle.resolver.p2'
+include 'net.akehurst.build.gradle.equinox'

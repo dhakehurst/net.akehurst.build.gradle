@@ -1,0 +1,14 @@
+subprojects {
+	
+	apply plugin: 'java'
+	
+	task sourcesJar(type:Jar){
+		from sourceSets.main.allSource
+		classifier = 'source'
+	}
+	
+	artifacts {
+		archives sourcesJar
+	}
+	
+}
