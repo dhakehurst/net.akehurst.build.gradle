@@ -78,11 +78,7 @@ class EquinoxPlugin implements Plugin<Project> {
 		for(Map.Entry<String,String> me: project.equinox.properties) {
 			properties+=me.key+"="+me.value+ System.lineSeparator()
 		}
-		file.write("""eclipse.application=${project.equinox.application}
-${properties}
-osgi.framework=file\\:plugins/org.eclipse.osgi_3.10.100.v20150529-1857.jar
-org.osgi.framework.executionenvironment=JavaSE-1.6,J2SE-1.6,J2SE-1.5,J2SE-1.4,J2SE-1.3,J2SE-1.2,JRE-1.1,CDC-1.1/Foundation-1.1,CDC-1.0/Foundation-1.0,OSGi/Minimum-1.2,OSGi/Minimum-1.1,OSGi/Minimum-1.0
-osgi.bundles.defaultStartLevel=4
+		file.write("""${properties}
 osgi.bundles=\\
 """)
 		project.tasks.jar.outputs.files.each {

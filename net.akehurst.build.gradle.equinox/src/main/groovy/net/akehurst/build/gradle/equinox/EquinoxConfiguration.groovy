@@ -24,7 +24,6 @@ class EquinoxConfiguration {
 		this.properties = new HashMap<>()
 	}
 	
-	String application;
 	String layout; //'gradle' or 'eclipse'
 
 	Map<String, String> startInfo
