@@ -35,7 +35,7 @@ dependencies {
 pluginBundle {
   website = 'http://www.gradle.org/'
   vcsUrl = 'https://github.com/dhakehurst/net.akehurst.build.gradle'
-  description = 'A plugin to enable gradlde dependencies on p2 repositories.'
+  description = 'A plugin to enable gradle dependencies on p2 repositories.'
   tags = ['p2', 'dependency', 'eclipse']
 
   plugins {
