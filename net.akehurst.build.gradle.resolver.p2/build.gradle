@@ -1,7 +1,19 @@
-plugins {
-	id 'java'
-	id 'maven'
+// First, apply the publishing plugin
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.gradle.publish:plugin-publish-plugin:0.9.3"
+  }
 }
+
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'java'
+apply plugin: 'maven'
+
 
 group='net.akehurst.build.gradle'
 version='1.0.1'
@@ -20,3 +32,16 @@ dependencies {
 	compile 'net.akehurst.build:net.akehurst.build.resolver.p2:1+'
 }
 
+pluginBundle {
+  website = 'http://www.gradle.org/'
+  vcsUrl = 'https://github.com/dhakehurst/net.akehurst.build.gradle'
+  description = 'A plugin to enable gradlde dependencies on p2 repositories.'
+  tags = ['p2', 'dependency', 'eclipse']
+
+  plugins {
+    greetingsPlugin {
+      id = 'net.akehurst.build.gradle.resolver.pTwo'
+      displayName = 'P2 Dependency Resolver'
+    }
+  }
+}

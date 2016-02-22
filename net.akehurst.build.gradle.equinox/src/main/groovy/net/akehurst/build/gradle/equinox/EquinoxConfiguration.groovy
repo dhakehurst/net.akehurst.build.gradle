@@ -47,4 +47,12 @@ class EquinoxConfiguration {
 	void property(String name, String value) {
 		this.properties.put(name,value)
 	}
+	
+	OsgiInfo osgi;
+	OsgiInfo getOsgi() {
+		if (null==this.osgi) {
+			this.osgi = new OsgiInfo();
+		}
+		return this.osgi;
+	}
 }

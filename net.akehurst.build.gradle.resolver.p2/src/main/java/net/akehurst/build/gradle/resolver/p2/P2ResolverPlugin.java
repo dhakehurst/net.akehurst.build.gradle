@@ -17,6 +17,8 @@ package net.akehurst.build.gradle.resolver.p2;
 
 import java.net.URL;
 
+import org.eclipse.osgi.internal.framework.EquinoxConfiguration;
+import org.eclipse.osgi.internal.framework.EquinoxContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
@@ -27,8 +29,8 @@ class P2ResolverPlugin implements Plugin<Project> {
 	 private final static Logger LOG = Logging.getLogger(P2ResolverPlugin.class);
 
 	public void apply(Project project) {
-		LOG.trace("apply");
-
+		LOG.trace("apply");		
+		
 		//The plugin class loader is an isolated descendant of the classloader that
 		// does the dependency resolution. So we need to mess with the classloaders
 		// in order to get the P2 resolver classes to load appropriately

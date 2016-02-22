@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     compile gradleApi()
-	//compile 'biz.aQute.bnd:bndlib:2.4.0'
+	compile 'net.akehurst.build:net.akehurst.build.resolver.p2:1+'
+
 }
 
