@@ -7,16 +7,16 @@ against a p2 update site.
 Usage
 -----
 
-plugin {
-  id 'net.akehurst.build.gradle.resolver.pTwo'
-}
-
-resolvers {
-    p2 {
-  		group 'eclipse-mars'
-  		uri 'http://download.eclipse.org/releases/mars/201506241002'
+    plugin {
+        id 'net.akehurst.build.gradle.resolver.pTwo'
     }
-}
+
+    resolvers {
+        p2 {
+  		    group 'eclipse-mars'
+  		    uri 'http://download.eclipse.org/releases/mars/201506241002'
+        }
+    }
 
 
 Limitations
