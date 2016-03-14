@@ -26,3 +26,5 @@ It currently does not support composite repositories.
 
 It is not a particularly clean implementation, I had to use much non-API.
 Contributions for improvement are welcome.
+
+Tested on gradle 2.7 and 2.8

@@ -40,8 +40,8 @@ class P2ResolverPlugin implements Plugin<Project> {
 		ClassLoader contextClassLoader = thread.getContextClassLoader();
 		//access ancestor class loader that can validly access the classes needed for repository resolving
 		// i.e 'org.apache.ivy.core.module.id.ModuleRevisionId'
-		ClassLoader toUse = contextClassLoader.getParent().getParent().getParent();
-		while(!(toUse instanceof MutableURLClassLoader)) {
+		ClassLoader toUse = contextClassLoader;
+		while(null!=toUse.getParent() && !(toUse instanceof MutableURLClassLoader)) {
 			toUse = toUse.getParent();
 		}
 		MutableURLClassLoader cl = (MutableURLClassLoader)toUse;

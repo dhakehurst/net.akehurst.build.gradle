@@ -16,7 +16,7 @@ apply plugin: 'maven'
 
 
 group='net.akehurst.build.gradle'
-version='1.0.1'
+version='1.0.3'
 
 repositories {
 	mavenLocal()
@@ -39,7 +39,7 @@ pluginBundle {
   tags = ['p2', 'dependency', 'eclipse']
 
   plugins {
-    greetingsPlugin {
+    p2Plugin {
       id = 'net.akehurst.build.gradle.resolver.pTwo'
       displayName = 'P2 Dependency Resolver'
     }
