@@ -57,6 +57,7 @@ Example - Multi-project
 ------------------------
 
 Top Level
+
     buildscript {
         repositories {
             maven { url "https://plugins.gradle.org/m2/"}
@@ -81,6 +82,7 @@ Top Level
     }
     
 Sub Project
+
     dependencies {
         compile 'eclipse-mars:org.eclipse.core.runtime:+'
     }
