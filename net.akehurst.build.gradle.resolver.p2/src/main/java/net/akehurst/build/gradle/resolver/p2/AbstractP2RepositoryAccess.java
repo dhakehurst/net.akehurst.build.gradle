@@ -18,29 +18,22 @@ package net.akehurst.build.gradle.resolver.p2;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
+
 import org.apache.ivy.core.module.descriptor.Configuration;
-import org.apache.ivy.core.module.descriptor.DefaultDependencyArtifactDescriptor;
-import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
 import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
-import org.apache.ivy.core.module.descriptor.DependencyDescriptor;
 import org.apache.ivy.core.module.descriptor.MDArtifact;
 import org.apache.ivy.core.module.id.ModuleId;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.eclipse.osgi.util.ManifestElement;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.CachingModuleComponentRepository;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.ModuleComponentRepositoryAccess;
 import org.gradle.api.internal.component.ArtifactType;
 import org.gradle.internal.component.external.model.ModuleComponentArtifactMetaData;
@@ -49,7 +42,6 @@ import org.gradle.internal.component.model.ComponentArtifactMetaData;
 import org.gradle.internal.component.model.ComponentOverrideMetadata;
 import org.gradle.internal.component.model.ComponentResolveMetaData;
 import org.gradle.internal.component.model.ComponentUsage;
-import org.gradle.internal.component.model.ConfigurationMetaData;
 import org.gradle.internal.component.model.DependencyMetaData;
 import org.gradle.internal.component.model.ModuleSource;
 import org.gradle.internal.resolve.ArtifactResolveException;
@@ -58,14 +50,10 @@ import org.gradle.internal.resolve.result.BuildableArtifactResolveResult;
 import org.gradle.internal.resolve.result.BuildableArtifactSetResolveResult;
 import org.gradle.internal.resolve.result.BuildableModuleComponentMetaDataResolveResult;
 import org.gradle.internal.resolve.result.BuildableModuleVersionListingResolveResult;
-import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.DumperOptions.Version;
 
 import com.google.common.collect.ImmutableSet;
-
-import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
 
 abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepositoryAccess {
 
@@ -76,10 +64,10 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 	abstract public Set<String> getVersions(String artifactId) throws OsgiP2ResolverException;
 
 	abstract public URI fetchArtifact(String artifactId, String versionRangeString) throws OsgiP2ResolverException;
-	
-	
+
+
 	String gradleToOsgiVersion(String gradleVersionString) {
-		
+
 		if ("+".equals(gradleVersionString)) {
 			return "0.0.0";
 		} else if (gradleVersionString.endsWith("+")) {
@@ -89,12 +77,12 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 			//strict version
 			return "["+gradleVersionString+","+gradleVersionString+"]";
 		}
-		
+
 	}
-	
+
 	void addDependencies(DefaultModuleDescriptor moduleDescriptor, String group, Manifest manifest) {
 		//can't resolve dependencies because the resolution of dependencies doesn't seem to look in the p2 resolver!
-		
+
 //		try {
 //			List<DependencyDescriptor> list = new ArrayList<>();
 //			Attributes atts = manifest.getMainAttributes();
@@ -248,7 +236,7 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 		LOG.trace("resolveConfigurationArtifacts");
         ModuleComponentArtifactMetaData artifact = module.artifact("jar", "jar", null);
         result.resolved(ImmutableSet.of(artifact));
-        
+
 	}
 
 	protected void resolveMetaDataArtifacts(ModuleComponentResolveMetaData module, BuildableArtifactSetResolveResult result) {
@@ -266,6 +254,6 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 	protected void resolveSourceArtifacts(ModuleComponentResolveMetaData module, BuildableArtifactSetResolveResult result) {
 		LOG.trace("resolveSourceArtifacts");
 		result.resolved(Collections.emptySet());
-		
+
 	}
 }

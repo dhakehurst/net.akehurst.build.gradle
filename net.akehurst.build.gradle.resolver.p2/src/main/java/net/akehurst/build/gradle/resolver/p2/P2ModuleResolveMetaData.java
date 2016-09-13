@@ -16,25 +16,18 @@
 package net.akehurst.build.gradle.resolver.p2;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import net.akehurst.build.gradle.p2resolver.gradle.component.model.AbstractModuleComponentResolveMetaData;
 
 import org.apache.ivy.core.module.descriptor.DefaultModuleDescriptor;
 import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleId;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.gradle.api.internal.artifacts.ivyservice.NamespaceId;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
-import org.gradle.internal.component.external.model.IvyModuleResolveMetaData;
 import org.gradle.internal.component.external.model.MavenModuleResolveMetaData;
 import org.gradle.internal.component.external.model.MutableModuleComponentResolveMetaData;
-import org.gradle.internal.component.model.DependencyMetaData;
 import org.gradle.internal.component.model.ModuleSource;
-
-//import org.gradle.internal.component.external.model.AbstractModuleComponentResolveMetaData; 
-import net.akehurst.build.gradle.p2resolver.gradle.component.model.AbstractModuleComponentResolveMetaData;
 
 //Must implement either IvyModuleResolveMetaData or MavenModuleResolveMetaData
 //otherwise gradle rejects the repository type

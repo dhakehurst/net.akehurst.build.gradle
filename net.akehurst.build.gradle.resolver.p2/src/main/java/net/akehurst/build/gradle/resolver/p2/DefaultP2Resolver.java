@@ -19,13 +19,13 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import net.akehurst.build.resolver.p2.SimpleOsgiP2Resolver;
+import net.akehurst.build.resolver.p2.osgi.SimpleOsgi;
+
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.ConfiguredModuleComponentRepository;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.ModuleComponentRepositoryAccess;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
-
-import net.akehurst.build.resolver.p2.osgi.SimpleOsgi;
-import net.akehurst.build.resolver.p2.SimpleOsgiP2Resolver;
 
 public class DefaultP2Resolver implements ConfiguredModuleComponentRepository {
 
