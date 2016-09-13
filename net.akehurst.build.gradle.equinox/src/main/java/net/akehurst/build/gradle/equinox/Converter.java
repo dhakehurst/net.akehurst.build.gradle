@@ -30,8 +30,7 @@ public class Converter {
 	public static void osgify(File jarFile, String symbolicName, String outputDir) throws Exception {
 		Logger log = Logging.getLogger(Converter.class);
 		
-		try {
-			JarFile jar = new JarFile(jarFile);
+		try (JarFile jar = new JarFile(jarFile)) {
 			Manifest m = jar.getManifest();
 			if (null==m) {
 				m = new Manifest();

@@ -183,35 +183,34 @@ abstract public class AbstractP2RepositoryAccess implements ModuleComponentRepos
 
 			URI fileUri = this.fetchArtifact(artifactId, osgiVersionRangeString);
 
-			JarFile bundle = new JarFile(new File(fileUri));
+			try (JarFile bundle = new JarFile(new File(fileUri))) {
+				DefaultModuleDescriptor moduleDescriptor = new DefaultModuleDescriptor(id, status, pubDate);
+				moduleDescriptor.addConfiguration(new Configuration(config));
+				this.addArtifact(moduleDescriptor, moduleComponentIdentifier.getModule(), "jar", "jar", Collections.<String, String> emptyMap(), config);
+				this.addDependencies(moduleDescriptor, moduleComponentIdentifier.getGroup(), bundle.getManifest());
+				LOG.trace("Status {}", moduleDescriptor.getStatus());
+				P2ModuleResolveMetaData metaData = new P2ModuleResolveMetaData(moduleDescriptor);
 
-			DefaultModuleDescriptor moduleDescriptor = new DefaultModuleDescriptor(id, status, pubDate);
-			moduleDescriptor.addConfiguration(new Configuration(config));
-			this.addArtifact(moduleDescriptor, moduleComponentIdentifier.getModule(), "jar", "jar", Collections.<String, String> emptyMap(), config);
-			this.addDependencies(moduleDescriptor, moduleComponentIdentifier.getGroup(), bundle.getManifest());
+				metaData.setArtifacts(Arrays.asList( metaData.artifact("jar", "jar", null)) );
+				ModuleSource source = new P2ModuleSource();
+				metaData.setSource(source);
 
-			LOG.trace("Status {}", moduleDescriptor.getStatus());
-			P2ModuleResolveMetaData metaData = new P2ModuleResolveMetaData(moduleDescriptor);
-			
-			metaData.setArtifacts(Arrays.asList( metaData.artifact("jar", "jar", null)) );
-			ModuleSource source = new P2ModuleSource();
-			metaData.setSource(source);
-			
-			
-			LOG.info("Resolved {} to {}", artifactId, fileUri);
-			if (null != fileUri) {
-				result.attempted(this.getRepositoryUri().toString());
 
-				result.resolved(metaData);
+				LOG.info("Resolved {} to {}", artifactId, fileUri);
+				if (null != fileUri) {
+					result.attempted(this.getRepositoryUri().toString());
 
-				if (!result.hasResult()) {
-					result.failed(new ModuleVersionResolveException(metaData.getComponentId(),
-							String.format("Cannot locate %s for '%s' in repository '%s'", "jar", artifactId, this.getRepositoryUri())));
+					result.resolved(metaData);
+
+					if (!result.hasResult()) {
+						result.failed(new ModuleVersionResolveException(metaData.getComponentId(),
+								String.format("Cannot locate %s for '%s' in repository '%s'", "jar", artifactId, this.getRepositoryUri())));
+					}
 				}
-			}
 
-			LOG.trace("result.getState() {}", result.getState());
-			LOG.trace("resolveComponentMetaData - resolved");
+				LOG.trace("result.getState() {}", result.getState());
+				LOG.trace("resolveComponentMetaData - resolved");
+			}
 		} catch (Throwable e) {
 			LOG.error("Cannont resolveComponentMetaData for "+moduleComponentIdentifier.getModule()+":"+moduleComponentIdentifier.getVersion(), e);
 			result.attempted(this.getRepositoryUri().toString());

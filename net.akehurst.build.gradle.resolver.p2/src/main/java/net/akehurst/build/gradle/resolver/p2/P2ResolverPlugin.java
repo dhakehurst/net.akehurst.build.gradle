@@ -15,7 +15,9 @@
  */
 package net.akehurst.build.gradle.resolver.p2;
 
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.eclipse.osgi.internal.framework.EquinoxConfiguration;
 import org.eclipse.osgi.internal.framework.EquinoxContainer;
@@ -44,10 +46,7 @@ class P2ResolverPlugin implements Plugin<Project> {
 		while(null!=toUse.getParent() && !(toUse instanceof MutableURLClassLoader)) {
 			toUse = toUse.getParent();
 		}
-		MutableURLClassLoader cl = (MutableURLClassLoader)toUse;
-		try {
-
-			java.net.URLClassLoader plCl = (java.net.URLClassLoader)contextClassLoader;
+		try (MutableURLClassLoader cl = (MutableURLClassLoader)toUse; URLClassLoader plCl = (URLClassLoader)contextClassLoader) {
 			for(URL location: plCl.getURLs()) {
 				cl.addURL(location );
 				LOG.trace("Adding URL to class loader: "+location);				
@@ -61,7 +60,7 @@ class P2ResolverPlugin implements Plugin<Project> {
 			Class<?> cls = toUse.loadClass("net.akehurst.build.gradle.resolver.p2.DefaultResolverHandler");
 		    project.getExtensions().create("resolvers", cls, project);
 		    
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | IOException e) {
 
 			e.printStackTrace();
 		}
