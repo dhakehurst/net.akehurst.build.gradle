@@ -15,10 +15,10 @@
  */
 package net.akehurst.build.gradle.resolver.p2;
 
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 
-import org.eclipse.osgi.internal.framework.EquinoxConfiguration;
-import org.eclipse.osgi.internal.framework.EquinoxContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
@@ -28,13 +28,14 @@ import org.gradle.internal.classloader.MutableURLClassLoader;
 class P2ResolverPlugin implements Plugin<Project> {
 	 private final static Logger LOG = Logging.getLogger(P2ResolverPlugin.class);
 
+	@Override
 	public void apply(Project project) {
-		LOG.trace("apply");		
-		
+		LOG.trace("apply");
+
 		//The plugin class loader is an isolated descendant of the classloader that
 		// does the dependency resolution. So we need to mess with the classloaders
 		// in order to get the P2 resolver classes to load appropriately
-		
+
 		//get the current class loader
 		Thread thread = Thread.currentThread();
 		ClassLoader contextClassLoader = thread.getContextClassLoader();
@@ -44,15 +45,12 @@ class P2ResolverPlugin implements Plugin<Project> {
 		while(null!=toUse.getParent() && !(toUse instanceof MutableURLClassLoader)) {
 			toUse = toUse.getParent();
 		}
-		MutableURLClassLoader cl = (MutableURLClassLoader)toUse;
-		try {
-
-			java.net.URLClassLoader plCl = (java.net.URLClassLoader)contextClassLoader;
+		try (MutableURLClassLoader cl = (MutableURLClassLoader)toUse; URLClassLoader plCl = (URLClassLoader)contextClassLoader) {
 			for(URL location: plCl.getURLs()) {
 				cl.addURL(location );
-				LOG.trace("Adding URL to class loader: "+location);				
+				LOG.trace("Adding URL to class loader: "+location);
 			}
-			
+
 //			//add url of this plugin to the jars searchable by the 'toUse' classLoader
 //			URL location = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 //			cl.addURL(location );
@@ -60,12 +58,12 @@ class P2ResolverPlugin implements Plugin<Project> {
 
 			Class<?> cls = toUse.loadClass("net.akehurst.build.gradle.resolver.p2.DefaultResolverHandler");
 		    project.getExtensions().create("resolvers", cls, project);
-		    
-		} catch (ClassNotFoundException e) {
+
+		} catch (ClassNotFoundException | IOException e) {
 
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

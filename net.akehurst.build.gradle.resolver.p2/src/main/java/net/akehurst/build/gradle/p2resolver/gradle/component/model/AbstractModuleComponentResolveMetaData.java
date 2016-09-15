@@ -43,8 +43,6 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import net.akehurst.build.gradle.resolver.p2.P2ModuleResolveMetaData;
-
 public
 abstract
 class AbstractModuleComponentResolveMetaData extends AbstractModuleDescriptorBackedMetaData implements MutableModuleComponentResolveMetaData {

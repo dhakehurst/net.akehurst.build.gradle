@@ -3,3 +3,6 @@
 */build/
 old/
 /build/
+.settings/
+.project
+.classpath

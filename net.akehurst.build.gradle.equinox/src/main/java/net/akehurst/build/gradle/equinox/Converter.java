@@ -15,28 +15,36 @@
  */
 package net.akehurst.build.gradle.equinox;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.jar.*;
-import org.slf4j.Logger;
+import java.util.Enumeration;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
-import org.gradle.api.logging.*;
+import org.gradle.api.logging.Logging;
+import org.slf4j.Logger;
 
 public class Converter {
 
 	public static void osgify(File jarFile, String symbolicName, String outputDir) throws Exception {
 		Logger log = Logging.getLogger(Converter.class);
-		
-		try {
-			JarFile jar = new JarFile(jarFile);
+
+		try (JarFile jar = new JarFile(jarFile)) {
 			Manifest m = jar.getManifest();
 			if (null==m) {
 				m = new Manifest();
 			}
-			
+
 			Path destinationPath = Paths.get(outputDir).resolve(jarFile.getName());
 			if (destinationPath.toFile().exists()) {
 				destinationPath.toFile().delete();
@@ -52,7 +60,7 @@ public class Converter {
 				//create osgi manifest entries
 				att.putValue("Manifest-Version", "1.0");
 				att.putValue("Bundle-SymbolicName", symbolicName);
-				
+
 				String exportPackages = "";
 				Enumeration<JarEntry> entries = jar.entries();
 				while(entries.hasMoreElements()){
@@ -67,7 +75,7 @@ public class Converter {
 				att.putValue("Export-Package", exportPackages);
 
 				//create new jar
-				
+
 				FileOutputStream out = new FileOutputStream(destinationPath.toFile());
 				JarOutputStream jarOut = new JarOutputStream(out, m);
 				entries = jar.entries();
@@ -81,24 +89,24 @@ public class Converter {
 						copy(ins,jarOut);
 					}
 				}
-				
-				
+
+
 				jarOut.close();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		
+
+
 	}
-	
+
 	static String fetchPackageName(JarEntry je) {
 		String n = je.getName();
 		int i = n.lastIndexOf('/');
 		n = n.substring(0, i);
 		return n;
 	}
-	
+
 	static void copy(InputStream ins, OutputStream outs) {
 	    try{
             byte[] bytes = new byte[10*1024];
@@ -114,5 +122,5 @@ public class Converter {
             ex.printStackTrace();
         }
 	}
-	
+
 }

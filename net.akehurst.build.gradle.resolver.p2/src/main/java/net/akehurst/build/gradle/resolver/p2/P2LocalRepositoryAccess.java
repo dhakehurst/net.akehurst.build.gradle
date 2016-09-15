@@ -16,27 +16,22 @@
 package net.akehurst.build.gradle.resolver.p2;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.Set;
 
+import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
+
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.ModuleComponentRepositoryAccess;
 import org.gradle.api.internal.component.ArtifactType;
-import org.gradle.internal.component.external.model.ModuleComponentResolveMetaData;
 import org.gradle.internal.component.model.ComponentArtifactMetaData;
 import org.gradle.internal.component.model.ComponentOverrideMetadata;
 import org.gradle.internal.component.model.ComponentResolveMetaData;
 import org.gradle.internal.component.model.ComponentUsage;
-import org.gradle.internal.component.model.DependencyMetaData;
 import org.gradle.internal.component.model.ModuleSource;
 import org.gradle.internal.resolve.result.BuildableArtifactResolveResult;
 import org.gradle.internal.resolve.result.BuildableArtifactSetResolveResult;
 import org.gradle.internal.resolve.result.BuildableModuleComponentMetaDataResolveResult;
-import org.gradle.internal.resolve.result.BuildableModuleVersionListingResolveResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
 
 public class P2LocalRepositoryAccess extends AbstractP2RepositoryAccess
 {

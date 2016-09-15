@@ -18,10 +18,10 @@ package net.akehurst.build.gradle.resolver.p2;
 import java.net.URI;
 import java.util.Set;
 
+import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
+
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
-
-import net.akehurst.build.resolver.p2.OsgiP2ResolverException;
 
 public class P2RemoteRepositoryAccess extends AbstractP2RepositoryAccess {
 
